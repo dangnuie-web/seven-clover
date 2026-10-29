@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>7 CLOVER</title>
+<meta name="description" content="7개의 네잎 클로버를 모아 행운의 주인공이 되어보세요! 펜 앤 페이퍼 게임 7 CLOVER 웹 버전">
+<link rel="icon" href="assets/cover.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap">
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+<main class="app">
+  <section class="sheet" id="sheet">
+    <header class="sheet-head">
+      <h1 class="title">7 CLOVER</h1>
+      <button class="badge" id="badge" title="새 게임">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><g fill="#1f7a45" transform="rotate(45 10 10)"><g transform="rotate(0 10 10)"><path d="M10 10.35L6.50 6.85L10.00 3.35L13.50 6.85Z"/><circle cx="8.25" cy="5.10" r="2.47"/><circle cx="11.75" cy="5.10" r="2.47"/></g><g transform="rotate(90 10 10)"><path d="M10 10.35L6.50 6.85L10.00 3.35L13.50 6.85Z"/><circle cx="8.25" cy="5.10" r="2.47"/><circle cx="11.75" cy="5.10" r="2.47"/></g><g transform="rotate(180 10 10)"><path d="M10 10.35L6.50 6.85L10.00 3.35L13.50 6.85Z"/><circle cx="8.25" cy="5.10" r="2.47"/><circle cx="11.75" cy="5.10" r="2.47"/></g><g transform="rotate(270 10 10)"><path d="M10 10.35L6.50 6.85L10.00 3.35L13.50 6.85Z"/><circle cx="8.25" cy="5.10" r="2.47"/><circle cx="11.75" cy="5.10" r="2.47"/></g><circle cx="10" cy="10" r="2.2"/></g></svg>
+        <span>SEVEN<br>CLOVER</span>
+      </button>
+    </header>
+    <div class="players" id="players"></div>
+    <svg class="board" id="board" viewBox="0 283 1000 1131" preserveAspectRatio="xMidYMid meet"></svg>
+  </section>
+
+  <aside class="panel" id="panel">
+    <nav class="foot top"><button class="help side" id="rulesBtn" aria-label="게임 방법" title="게임 방법">?</button><button class="btn black" id="newBtn">새 게임</button></nav>
+    <div class="turn" id="turn"></div>
+    <div class="draws" id="draws"></div>
+    <div class="luck" id="luck"></div>
+    <div class="hint" id="hint"></div>
+    <div class="actions">
+      <button class="btn ghost" id="undo">되돌리기</button>
+      <button class="btn" id="end">차례 끝내기</button>
+    </div>
+    <ol class="log" id="log"></ol>
+  </aside>
+</main>
+
+<!-- 시작 -->
+<div class="modal" id="startModal">
+  <div class="card start">
+    <button class="help" id="rulesBtn2" aria-label="게임 방법" title="게임 방법">?</button>
+    <img class="cover" src="assets/cover.png" alt="7 CLOVER 커버">
+    <p class="lead">7개의 네잎 클로버를 모아<br>행운의 주인공이 되어보세요!</p>
+    <div class="seg" id="modeSeg">
+      <button data-mode="ai" class="on"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="3" width="16" height="11" rx="2.5"/><rect x="7" y="15.5" width="6" height="2" rx="1"/></svg>컴퓨터 대결</button>
+      <button data-mode="hot"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true"><circle cx="7" cy="10" r="5.5"/><circle cx="13" cy="10" r="5.5" opacity=".55"/></svg>돌려하기</button>
+    </div>
+    <div class="seg" id="countSeg">
+      <button data-n="2" class="on"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6" r="3.6"/><path d="M3.5 18a6.5 6.5 0 0 1 13 0Z"/></svg>2</button>
+      <button data-n="3"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6" r="3.6"/><path d="M3.5 18a6.5 6.5 0 0 1 13 0Z"/></svg>3</button>
+      <button data-n="4"><svg class="ic" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="6" r="3.6"/><path d="M3.5 18a6.5 6.5 0 0 1 13 0Z"/></svg>4</button>
+    </div>
+    <button class="btn big" id="startBtn">START</button>
+  </div>
+</div>
+
+<!-- 행운 1~2장 고르기 -->
+<div class="modal" id="chooseModal">
+  <div class="card choose">
+    <p><b class="tag">행운</b> 몇 장 더 그릴까요?</p>
+    <div class="row">
+      <button class="btn" data-n="1">1장 더!</button>
+      <button class="btn" data-n="2">2장 더!</button>
+    </div>
+  </div>
+</div>
+
+<!-- 룰 -->
+<div class="modal" id="rulesModal">
+  <div class="card rules">
+    <button class="x" data-close aria-label="닫기"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 5L19 19M19 5L5 19" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></button>
+    <h2>SEVEN CLOVER</h2>
+    <p class="lead">7개의 네잎 클로버를 모아 행운의 주인공이 되어보세요!</p>
+    <h3>게임준비</h3>
+    <p>가장 운이 좋은 사람이 선이 됩니다. 행운대결을 합시다. 가위바위보!</p>
+    <h3>게임시작</h3>
+    <ol>
+      <li><b>자신의 차례에 1~3장의 잎을 그릴 수 있습니다.</b><br>1~3장 내에서 원하는 만큼 그릴 수 있으며, 여러 클로버에 나누어 그릴 수 있습니다. 잎 1장 대신에 무당벌레나 꽃, 새싹을 그릴 수도 있습니다.</li>
+      <li><b>클로버의 마지막 잎을 그린 사람이 클로버의 주인이 됩니다.</b> 그 표시로 줄기를 그립니다.<br>클로버가 완성되면 <b class="tag">행운</b>이 생깁니다. 차례가 넘어가기 전에 꼭 사용합니다. 잎 그리기와 행운 사용은 원하는 순서로 섞어 쓸 수 있어요. 콤보를 노려 보세요!</li>
+      <li><b>행운의 종류는 세 가지입니다.</b>
+        <ul>
+          <li data-lk="more"><b>더!</b> 적힌 장수만큼 잎을 꼭 더 그려요. 1~2장 더는 장수를 고를 수 있어요.</li>
+          <li data-lk="resv"><b>찜!</b> 빈 잎에 하트를 그려 내 자리로 맡아 둬요. 다른 사람은 그 잎을 못 그려요. 찜은 다음 내 차례가 끝날 때까지 유지되고, 그때까지 안 그리면 하트가 지워져 다시 빈 잎이 돼요.</li>
+          <li data-lk="cut"><b>컷!</b> 칠해진 잎 하나에 X를 그어 지워요. 지운 자리는 다시 못 칠해요. 남의 네잎 클로버를 세잎으로 만들어 보세요! 잎이 1장 남은 클로버는 못 잘라요.</li>
+        </ul>
+      </li>
+    </ol>
+    <h3>게임종료</h3>
+    <p><b class="tag">빠른종료</b> 누군가 7장의 네잎 클로버를 먼저 모으면 승리하며 게임이 끝납니다. 잎이 잘려 3잎이 된 클로버는 네잎 클로버로 세지 않습니다.</p>
+    <p><b class="tag">빅매치!</b> 아무도 7장을 모으지 못하면, 시트의 모든 클로버가 그려진 차례가 끝날 때 점수를 계산합니다.</p>
+    <table class="score-table">
+      <tr><th colspan="4">클로버</th><th rowspan="2">무당<br>벌레</th><th rowspan="2">꽃,<br>새싹</th></tr>
+      <tr><th>4잎</th><th>3잎</th><th>2잎</th><th>1잎</th></tr>
+      <tr><td>5점</td><td>3점</td><td>5점</td><td>7점</td><td>2점</td><td>1점</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- 결과 -->
+<div class="modal" id="endModal">
+  <div class="card end">
+    <h2 id="endTitle"></h2>
+    <p class="lead" id="endSub"></p>
+    <div id="endTable"></div>
+    <div class="row">
+      <button class="btn ghost" id="seeBoard">시트 보기</button>
+      <button class="btn" id="again">다시 하기</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="game.js?v=1"></script>
+</body>
+</html>
